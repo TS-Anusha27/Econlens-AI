@@ -1,6 +1,9 @@
 import { RegionData } from '../types';
+import { POLLACHI_DATA } from './geographyRegistry';
 
 export const REGIONS_DATA: Record<string, RegionData> = {
+  'pollachi': POLLACHI_DATA,
+
   'coimbatore': {
     id: 'coimbatore',
     name: 'Coimbatore',
@@ -20,6 +23,139 @@ export const REGIONS_DATA: Record<string, RegionData> = {
     observedActivityIndex: 58.2,
     opportunityGap: 28.2,
     opportunityStatus: 'HIGH_POTENTIAL_BOTTLENECK',
+
+    administrativeHierarchy: {
+      country: 'India',
+      state: 'Tamil Nadu',
+      district: 'Coimbatore'
+    },
+
+    summaryText: 'Coimbatore is a diversified manufacturing and engineering powerhouse with a strong MSME base. Its future growth depends on resolving port freight delays, modernizing casting and CNC tooling skills, and unlocking agro-processing value in southern taluks like Pollachi.',
+
+    keyDrivers: {
+      primarySectors: [
+        {
+          name: 'Precision Engineering, Pumps & Foundry',
+          sharePercent: 42.6,
+          employmentPercent: 38.0,
+          description: 'Supplies over 45% of India’s domestic and agricultural water pumps alongside critical automotive castings and CNC tooling.'
+        },
+        {
+          name: 'Services, IT & Healthcare',
+          sharePercent: 43.2,
+          employmentPercent: 36.0,
+          description: 'Expanding software service centers, engineering R&D hubs, and tertiary medical health cities servicing western Tamil Nadu.'
+        },
+        {
+          name: 'Textiles, Technical Weaving & Garments',
+          sharePercent: 14.2,
+          employmentPercent: 26.0,
+          description: 'Historic "Manchester of South India" hosting automated spinning mills, technical non-woven fabrics, and garment units.'
+        }
+      ],
+      livelihoodsDescription: 'Over 60% of Coimbatore’s workforce is employed across MSME manufacturing workshops, pump assembly units, spinning mills, and growing IT service centers. Technical diploma holders form the backbone of the district’s industrial ecosystem.',
+      keyProducts: [
+        'Agricultural & Submersible Water Pumps',
+        'Automotive Precision Castings & Forgings',
+        'Textile Machinery & Spinning Spindles',
+        'Cotton Yarn & Medical Technical Textiles',
+        'Wet Grinders & Kitchen Appliances',
+        'Coconut, Spices & Horticulture Produce'
+      ],
+      comparativeAdvantages: [
+        'Dense concentration of over 54,000 active MSMEs and specialized casting foundries',
+        'Strong technical education ecosystem with 45+ premier engineering colleges and polytechnic institutes',
+        'Proactive cooperative industrial bodies including CODISSIA, SIEMA, and Institute of Indian Foundrymen',
+        'Favorable inland climatic conditions and proximity to Palakkad Gap trade logistics route'
+      ],
+      expansionOpportunities: [
+        'Transition from conventional ICE auto components to electric vehicle battery pack assemblies and motor drivetrains',
+        'Dedicated rail container dry-port connecting to Tuticorin VOC and Cochin ports to cut freight costs by 40%',
+        'Decentralized agricultural cold-chain network across southern coconut blocks like Pollachi and Anaimalai'
+      ]
+    },
+
+    strengths: [
+      {
+        title: 'Precision Engineering & MSME Density',
+        description: 'Produces over 45% of India’s domestic and agricultural water pumps and critical automotive precision components.',
+        evidence: 'Over 54,000 registered MSMEs operate across casting, machining, and tooling clusters.',
+        benchmark: 'Highest pump manufacturing concentration in India'
+      },
+      {
+        title: 'Robust Polytechnic & Engineering Talent Pool',
+        description: 'Dense network of technical institutions graduating over 28,000 engineers and diploma holders annually.',
+        evidence: 'Tertiary educational graduation rate reaches 32.6% (state average: 28.4%).',
+        benchmark: '45+ accredited engineering colleges'
+      },
+      {
+        title: 'Strong Cluster-Level Institutional Governance',
+        description: 'Industry associations like CODISSIA and SIEMA operate shared exhibition centers, defense innovation hubs, and supplier consortiums.',
+        evidence: 'Successfully operationalized CODISSIA Industrial Parks with shared infrastructure.',
+        benchmark: 'Pioneer of cluster-led SME development models'
+      }
+    ],
+
+    challenges: [
+      {
+        title: 'High Freight Logistics Friction to Container Ports',
+        description: 'Inland export shipments face average 10.8-hour transit times to Cochin or Tuticorin ports compared to 6.2-hour benchmark.',
+        evidence: 'Commercial GPS probes show highway bottleneck friction adds 22% higher container logistics costs.',
+        benchmark: '215 km distance with road freight congestion'
+      },
+      {
+        title: 'CNC & Mechatronics Skill Mismatch',
+        description: 'Foundries and precision manufacturers struggle with severe vacancies for automated tooling and PLC programmers despite youth underemployment.',
+        evidence: 'Employer survey confirms 64% of precision firms report 60+ day vacancy durations for automation technicians.',
+        benchmark: '42.0% skill mismatch index'
+      },
+      {
+        title: 'Energy Tariff Escalation in Foundries',
+        description: 'Rising industrial electricity tariffs and scrap steel price volatility reduce operating margins in small cupola casting units.',
+        evidence: 'Operating margins across traditional foundries dropped from 11.2% in 2018 to 6.8% in 2024.',
+        benchmark: '18% power tariff rise over 3 years'
+      }
+    ],
+
+    multiYearProjections: {
+      horizons: [
+        {
+          years: 1,
+          label: '1 Year (Quick Wins Active)',
+          baseline: { gva: 90.4, gap: 28.2, jobsAffected: 8500, msmeGrowth: 5.4 },
+          plan: { gva: 95.8, gap: 23.4, jobsAffected: 24000, msmeGrowth: 8.2 },
+          accelerated: { gva: 99.2, gap: 20.8, jobsAffected: 36000, msmeGrowth: 10.5 }
+        },
+        {
+          years: 3,
+          label: '3 Years (Dry Port & Skill Labs Live)',
+          baseline: { gva: 94.2, gap: 27.5, jobsAffected: 18000, msmeGrowth: 5.6 },
+          plan: { gva: 108.4, gap: 16.2, jobsAffected: 58000, msmeGrowth: 12.4 },
+          accelerated: { gva: 116.0, gap: 11.5, jobsAffected: 84000, msmeGrowth: 16.8 }
+        },
+        {
+          years: 5,
+          label: '5 Years (Full Mechatronics & Green Foundries)',
+          baseline: { gva: 98.6, gap: 26.8, jobsAffected: 26000, msmeGrowth: 5.8 },
+          plan: { gva: 124.5, gap: 9.8, jobsAffected: 95000, msmeGrowth: 18.2 },
+          accelerated: { gva: 138.2, gap: 5.4, jobsAffected: 142000, msmeGrowth: 24.5 }
+        },
+        {
+          years: 10,
+          label: '10 Years (Global Precision Engineering Capital)',
+          baseline: { gva: 108.0, gap: 25.0, jobsAffected: 42000, msmeGrowth: 6.0 },
+          plan: { gva: 152.0, gap: 4.8, jobsAffected: 165000, msmeGrowth: 26.0 },
+          accelerated: { gva: 178.5, gap: 2.1, jobsAffected: 240000, msmeGrowth: 35.0 }
+        }
+      ],
+      assumptions: [
+        'Dedicated rail container dry-port at Irugur operational by month 18, cutting export transit times by 40%',
+        '12 Kovai Skill Guild automation labs upskill 4,500 diploma technicians annually',
+        'Group captive renewable power reduces foundry unit electricity tariffs by 32%',
+        'Macro industrial manufacturing growth rate modeled at 7.2% national baseline'
+      ],
+      uncertaintyRange: '±6.8% sensitivity band depending on global export order demand and raw pig iron price cycles.'
+    },
     
     indicators: {
       lfpr: 54.8,

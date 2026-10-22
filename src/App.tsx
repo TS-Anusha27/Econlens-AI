@@ -1,66 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { REGIONS_DATA } from './data/regionsData';
-import { DATASET_REGISTRY } from './data/datasetsRegistry';
 import { RegionData } from './types';
 
-// Components
+// Core Navigation & Layout Components
 import { Navbar } from './components/Navbar';
 import { GeographicSelector } from './components/GeographicSelector';
-import { KpiCardsGrid } from './components/KpiCardsGrid';
+import { HeroSection } from './components/HeroSection';
+import { UnifiedEconomicAnalysis } from './components/UnifiedEconomicAnalysis';
 import { InteractiveMap } from './components/InteractiveMap';
-import { EconomicCharts } from './components/EconomicCharts';
 import { BottleneckDiagnosisView } from './components/BottleneckDiagnosisView';
 import { ScenarioSimulatorView } from './components/ScenarioSimulatorView';
 import { CompareRegionsView } from './components/CompareRegionsView';
 import { DataMethodologyView } from './components/DataMethodologyView';
-import { HeroSection } from './components/HeroSection';
 
-// Modals
+// Interactive Modals
 import { AskEconLensModal } from './components/AskEconLensModal';
 import { ReportExportModal } from './components/ReportExportModal';
 import { DataIngestionModal } from './components/DataIngestionModal';
 import { SearchModal } from './components/SearchModal';
 
-// Icons
-import { 
-  Sparkles, 
-  ArrowRight, 
-  MapPin, 
-  BarChart3, 
-  AlertTriangle, 
-  SlidersHorizontal, 
-  Layers
-} from 'lucide-react';
+// Lucide Icons
+import { Compass } from 'lucide-react';
 
 export const App: React.FC = () => {
-  // Navigation State - defaults to 'overview'
-  const [currentTab, setCurrentTab] = useState<string>('overview');
+  // Navigation Tab: 'explore' | 'bottlenecks' | 'simulator' | 'compare' | 'methodology'
+  const [currentTab, setCurrentTab] = useState<string>('explore');
 
-  // Sub-view in District Overview: 'map' | 'trends' | 'indicators'
-  const [overviewView, setOverviewView] = useState<'map' | 'trends' | 'indicators'>('map');
-
-  // Geographic Selection State (Default: Coimbatore Showcase Pilot)
-  const [selectedRegionId, setSelectedRegionId] = useState<string>('coimbatore');
-  const [selectedSubRegion, setSelectedSubRegion] = useState<string | null>(null);
-
-  // Active Region Object with local mutations allowed
+  // Active Geographic Region (Default: 'pollachi' showcase pilot)
+  const [selectedRegionId, setSelectedRegionId] = useState<string>('pollachi');
   const [customRegionOverrides, setCustomRegionOverrides] = useState<Record<string, Partial<RegionData>>>({});
 
-  // Theme State
-  const [isDark, setIsDark] = useState<boolean>(false);
+  // Active Map vs Workspace sub-toggle in Explore tab
+  const [showMapPreview, setShowMapPreview] = useState<boolean>(false);
 
-  // Modals
+  // Modals state
   const [isAiOpen, setIsAiOpen] = useState<boolean>(false);
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false);
   const [isIngestOpen, setIsIngestOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
 
-  // Active Region Data
-  const baseRegion = REGIONS_DATA[selectedRegionId] || REGIONS_DATA['coimbatore'];
+  // Active Region data resolution
+  const baseRegion = REGIONS_DATA[selectedRegionId] || REGIONS_DATA['pollachi'] || REGIONS_DATA['coimbatore'];
   const activeRegion: RegionData = {
     ...baseRegion,
     ...(customRegionOverrides[selectedRegionId] || {})
   };
+
+  // Enforce light theme permanently across page refreshes
+  useEffect(() => {
+    document.body.classList.add('theme-light');
+    document.body.classList.remove('theme-dark');
+  }, []);
 
   // Keyboard shortcut listener for Ctrl+K
   useEffect(() => {
@@ -74,21 +64,6 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Theme toggle effect
-  useEffect(() => {
-    if (isDark) {
-      document.body.classList.add('theme-dark');
-      document.body.classList.remove('theme-light');
-    } else {
-      document.body.classList.add('theme-light');
-      document.body.classList.remove('theme-dark');
-    }
-  }, [isDark]);
-
-  const toggleTheme = () => {
-    setIsDark(prev => !prev);
-  };
-
   const handleIngestSuccess = (customData: Partial<RegionData>) => {
     setCustomRegionOverrides(prev => ({
       ...prev,
@@ -101,267 +76,125 @@ export const App: React.FC = () => {
   };
 
   const handleResetFilters = () => {
-    setSelectedRegionId('coimbatore');
-    setSelectedSubRegion(null);
+    setSelectedRegionId('pollachi');
   };
 
+  const activeBreadcrumbLabel = activeRegion.parentRegionId 
+    ? `${activeRegion.name}, ${activeRegion.parentRegionId.charAt(0).toUpperCase() + activeRegion.parentRegionId.slice(1)}` 
+    : `${activeRegion.name}, ${activeRegion.state}`;
+
   return (
-    <div className="app-container">
-      {/* Clean Global Header */}
+    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F7F9FC' }}>
+      
+      {/* 1. Global Navigation Bar (Pure Light Theme) */}
       <Navbar
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
-        isDark={isDark}
-        toggleTheme={toggleTheme}
+        activeLocationName={activeBreadcrumbLabel}
         onOpenAi={() => setIsAiOpen(true)}
         onOpenExport={() => setIsExportOpen(true)}
-        onOpenIngest={() => setIsIngestOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
       />
 
-      {/* Main Content Workspace */}
-      <main className="main-content">
-        {/* VIEW 1: DISTRICT OVERVIEW (Default) */}
-        {(currentTab === 'overview' || currentTab === 'home' || currentTab === 'dashboard') && (
+      {/* 2. Main Application Workspace */}
+      <main className="main-content" style={{ flex: 1, padding: '24px 32px 64px', maxWidth: '1540px', margin: '0 auto', width: '100%' }}>
+        
+        {/* VIEW 1: EXPLORE & UNIFIED ECONOMIC ANALYSIS (Default Primary Workspace) */}
+        {(currentTab === 'explore' || currentTab === 'overview' || currentTab === 'home') && (
           <div>
-            {/* Friendly, uncluttered Hero Banner */}
+            {/* A. Minimal Modern Hero Banner with Headline & 5-Stage Journey */}
             <HeroSection
               region={activeRegion}
-              onExplore={() => setOverviewView('map')}
-              onSelectRegion={(id) => {
-                setSelectedRegionId(id);
-                setSelectedSubRegion(null);
-              }}
               onNavigateToTab={setCurrentTab}
               onOpenAi={() => setIsAiOpen(true)}
+              onSelectStage={(stageNum) => {
+                if (stageNum === 1) {
+                  const el = document.getElementById('geo-selector-container');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                } else if (stageNum === 2) {
+                  const el = document.getElementById('section-economic-drivers');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                } else if (stageNum === 3) {
+                  const el = document.getElementById('section-bottlenecks');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                } else if (stageNum === 4) {
+                  const el = document.getElementById('section-action-plan');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                } else if (stageNum === 5) {
+                  const el = document.getElementById('section-future-simulator');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             />
 
-            {/* Quick District Switcher Bar */}
-            <GeographicSelector
-              selectedRegion={activeRegion}
-              onSelectRegion={(id) => {
-                setSelectedRegionId(id);
-                setSelectedSubRegion(null);
-              }}
-              selectedSubRegion={selectedSubRegion}
-              onSelectSubRegion={setSelectedSubRegion}
-              onNavigateToCompare={() => setCurrentTab('compare')}
-              onResetFilters={handleResetFilters}
-            />
-
-            {/* 3 Core Highlight Numbers */}
-            <div 
-              style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', 
-                gap: '16px', 
-                marginBottom: '24px' 
-              }}
-            >
-              <div className="card" style={{ padding: '20px', borderLeft: '4px solid var(--blue-primary)' }}>
-                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>
-                  Potential Capacity
-                </div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--blue-primary)', marginTop: '4px', marginBottom: '4px' }}>
-                  {activeRegion.potentialIndex.toFixed(1)} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>/ 100</span>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                  Estimated maximum capacity based on workforce, location, and infrastructure.
-                </div>
-              </div>
-
-              <div className="card" style={{ padding: '20px', borderLeft: '4px solid var(--teal-primary)' }}>
-                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>
-                  Current Economic Output
-                </div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--teal-primary)', marginTop: '4px', marginBottom: '4px' }}>
-                  {activeRegion.observedActivityIndex.toFixed(1)} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>/ 100</span>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                  Current measured output from registered businesses, payroll, and activity.
-                </div>
-              </div>
-
-              <div className="card" style={{ padding: '20px', borderLeft: '4px solid var(--orange-warning)' }}>
-                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>
-                  Unlocked Growth Opportunity
-                </div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--orange-warning)', marginTop: '4px', marginBottom: '4px' }}>
-                  {activeRegion.opportunityGap.toFixed(1)} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>points gap</span>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                  {activeRegion.opportunityGap > 20 
-                    ? 'High growth opportunity constrained by specific local bottlenecks.'
-                    : 'Balanced performance operating close to regional potential.'}
-                </div>
-              </div>
-            </div>
-
-            {/* View Sub-Tabs: Map, Historical Trends, or All Indicators */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <button
-                  onClick={() => setOverviewView('map')}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '0.84rem',
-                    fontWeight: overviewView === 'map' ? 700 : 500,
-                    background: overviewView === 'map' ? 'var(--blue-subtle)' : 'var(--bg-secondary)',
-                    color: overviewView === 'map' ? 'var(--blue-primary)' : 'var(--text-secondary)',
-                    border: overviewView === 'map' ? '1px solid var(--blue-border)' : '1px solid var(--border-subtle)',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
-                >
-                  <MapPin size={16} />
-                  <span>District Map</span>
-                </button>
-
-                <button
-                  onClick={() => setOverviewView('trends')}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '0.84rem',
-                    fontWeight: overviewView === 'trends' ? 700 : 500,
-                    background: overviewView === 'trends' ? 'var(--blue-subtle)' : 'var(--bg-secondary)',
-                    color: overviewView === 'trends' ? 'var(--blue-primary)' : 'var(--text-secondary)',
-                    border: overviewView === 'trends' ? '1px solid var(--blue-border)' : '1px solid var(--border-subtle)',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
-                >
-                  <BarChart3 size={16} />
-                  <span>Growth Trends (2018–2024)</span>
-                </button>
-
-                <button
-                  onClick={() => setOverviewView('indicators')}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '0.84rem',
-                    fontWeight: overviewView === 'indicators' ? 700 : 500,
-                    background: overviewView === 'indicators' ? 'var(--blue-subtle)' : 'var(--bg-secondary)',
-                    color: overviewView === 'indicators' ? 'var(--blue-primary)' : 'var(--text-secondary)',
-                    border: overviewView === 'indicators' ? '1px solid var(--blue-border)' : '1px solid var(--border-subtle)',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
-                >
-                  <Layers size={16} />
-                  <span>All Regional Indicators</span>
-                </button>
-              </div>
-
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Showing data for <strong>{activeRegion.name}</strong>
-              </div>
-            </div>
-
-            {/* Active Sub-View Display */}
-            {overviewView === 'map' && (
-              <InteractiveMap
+            {/* B. Prominent 4-Dependent Geographical Selector */}
+            <div id="geo-selector-container">
+              <GeographicSelector
                 selectedRegion={activeRegion}
-                onSelectRegion={(id) => {
-                  setSelectedRegionId(id);
-                  setSelectedSubRegion(null);
+                onSelectRegion={(id) => setSelectedRegionId(id)}
+                onNavigateToCompare={() => setCurrentTab('compare')}
+                onResetFilters={handleResetFilters}
+                onAnalyseThisArea={() => {
+                  const el = document.getElementById('section-executive-summary');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                onNavigateToTab={setCurrentTab}
               />
-            )}
-
-            {overviewView === 'trends' && (
-              <EconomicCharts region={activeRegion} />
-            )}
-
-            {overviewView === 'indicators' && (
-              <KpiCardsGrid
-                region={activeRegion}
-                onNavigateToTab={setCurrentTab}
-              />
-            )}
-
-            {/* Bottom Clear Call to Action Cards */}
-            <div 
-              style={{ 
-                marginTop: '32px', 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-                gap: '16px' 
-              }}
-            >
-              <div 
-                className="card" 
-                onClick={() => setCurrentTab('bottlenecks')}
-                style={{ 
-                  cursor: 'pointer', 
-                  padding: '20px', 
-                  border: '1px solid var(--border-subtle)',
-                  transition: 'transform var(--transition-fast)'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-md)', background: 'var(--orange-subtle)', color: 'var(--orange-warning)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <AlertTriangle size={18} />
-                  </div>
-                  <strong style={{ fontSize: '1rem' }}>See Bottlenecks & Fixes</strong>
-                </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-                  Discover the top infrastructure, skill, and market barriers holding {activeRegion.name} back.
-                </p>
-                <span style={{ fontSize: '0.82rem', color: 'var(--blue-primary)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <span>View Solutions</span>
-                  <ArrowRight size={14} />
-                </span>
-              </div>
-
-              <div 
-                className="card" 
-                onClick={() => setCurrentTab('simulator')}
-                style={{ 
-                  cursor: 'pointer', 
-                  padding: '20px', 
-                  border: '1px solid var(--border-subtle)',
-                  transition: 'transform var(--transition-fast)'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-md)', background: 'var(--blue-subtle)', color: 'var(--blue-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <SlidersHorizontal size={18} />
-                  </div>
-                  <strong style={{ fontSize: '1rem' }}>What-If Policy Simulator</strong>
-                </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-                  Simulate what happens if transport speed improves by 15% or 5,000 workers are trained.
-                </p>
-                <span style={{ fontSize: '0.82rem', color: 'var(--blue-primary)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <span>Test Scenarios</span>
-                  <ArrowRight size={14} />
-                </span>
-              </div>
             </div>
+
+            {/* Optional Map Visual Preview Toggle */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <div style={{ fontSize: '0.84rem', color: '#64748B' }}>
+                Showing economic intelligence for <strong>{activeRegion.name}</strong> ({activeRegion.state}, {activeRegion.country})
+              </div>
+
+              <button
+                onClick={() => setShowMapPreview(prev => !prev)}
+                style={{
+                  background: showMapPreview ? '#EFF6FF' : '#FFFFFF',
+                  color: '#2563EB',
+                  border: '1px solid #CBD5E1',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Compass size={14} />
+                <span>{showMapPreview ? 'Hide Geographic Map' : 'Show Geographic Map Preview'}</span>
+              </button>
+            </div>
+
+            {/* Geographic Map Preview if toggled */}
+            {showMapPreview && (
+              <div style={{ marginBottom: '28px' }}>
+                <InteractiveMap
+                  selectedRegion={activeRegion}
+                  onSelectRegion={(id) => setSelectedRegionId(id)}
+                  onNavigateToTab={setCurrentTab}
+                />
+              </div>
+            )}
+
+            {/* C. The Unified Economic Analysis Workspace */}
+            <UnifiedEconomicAnalysis
+              region={activeRegion}
+              onNavigateToTab={setCurrentTab}
+              onOpenAiAssistant={() => setIsAiOpen(true)}
+              onOpenExportReport={() => setIsExportOpen(true)}
+            />
           </div>
         )}
 
-        {/* VIEW 2: BOTTLENECKS & SOLUTIONS */}
+        {/* VIEW 2: ACTION PLAN & BOTTLENECK DIAGNOSIS DEEP DIVE */}
         {currentTab === 'bottlenecks' && (
           <div>
             <GeographicSelector
               selectedRegion={activeRegion}
-              onSelectRegion={(id) => {
-                setSelectedRegionId(id);
-                setSelectedSubRegion(null);
-              }}
-              selectedSubRegion={selectedSubRegion}
-              onSelectSubRegion={setSelectedSubRegion}
+              onSelectRegion={(id) => setSelectedRegionId(id)}
               onNavigateToCompare={() => setCurrentTab('compare')}
               onResetFilters={handleResetFilters}
             />
@@ -373,17 +206,12 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* VIEW 3: WHAT-IF SCENARIO SIMULATOR */}
+        {/* VIEW 3: WHAT-IF SCENARIO SIMULATOR DEEP DIVE */}
         {currentTab === 'simulator' && (
           <div>
             <GeographicSelector
               selectedRegion={activeRegion}
-              onSelectRegion={(id) => {
-                setSelectedRegionId(id);
-                setSelectedSubRegion(null);
-              }}
-              selectedSubRegion={selectedSubRegion}
-              onSelectSubRegion={setSelectedSubRegion}
+              onSelectRegion={(id) => setSelectedRegionId(id)}
               onNavigateToCompare={() => setCurrentTab('compare')}
               onResetFilters={handleResetFilters}
             />
@@ -395,20 +223,17 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* VIEW 4: COMPARE DISTRICTS */}
+        {/* VIEW 4: COMPARE REGIONS */}
         {currentTab === 'compare' && (
           <div>
             <CompareRegionsView
               currentRegion={activeRegion}
-              onSelectRegion={(id) => {
-                setSelectedRegionId(id);
-                setSelectedSubRegion(null);
-              }}
+              onSelectRegion={(id) => setSelectedRegionId(id)}
             />
           </div>
         )}
 
-        {/* VIEW 5: DATA & METHODOLOGY (Secondary) */}
+        {/* VIEW 5: DATA SOURCES & METHODOLOGY */}
         {currentTab === 'methodology' && (
           <div>
             <DataMethodologyView
@@ -418,11 +243,11 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Clean, Simple Footer */}
+      {/* 3. Clean, Light-Themed Footer */}
       <footer 
         style={{ 
-          borderTop: '1px solid var(--border-subtle)', 
-          background: 'var(--bg-secondary)', 
+          borderTop: '1px solid #E2E8F0', 
+          backgroundColor: '#FFFFFF', 
           padding: '24px 32px',
           marginTop: 'auto'
         }}
@@ -437,39 +262,39 @@ export const App: React.FC = () => {
             flexWrap: 'wrap', 
             gap: '16px',
             fontSize: '0.82rem',
-            color: 'var(--text-muted)'
+            color: '#64748B'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <strong style={{ color: 'var(--text-primary)' }}>EconLens AI</strong>
+            <strong style={{ color: '#14213D' }}>EconLens AI</strong>
             <span>•</span>
-            <span>District Economic Intelligence</span>
+            <span>Discovering Hidden Economic Opportunities & Bottlenecks</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <button 
               onClick={() => setCurrentTab('methodology')} 
-              style={{ color: 'var(--text-muted)', fontSize: '0.82rem', cursor: 'pointer' }}
+              style={{ color: '#64748B', fontSize: '0.82rem', cursor: 'pointer', background: 'none', border: 'none' }}
             >
               Data Methodology
             </button>
             <button 
               onClick={() => setIsExportOpen(true)} 
-              style={{ color: 'var(--text-muted)', fontSize: '0.82rem', cursor: 'pointer' }}
+              style={{ color: '#64748B', fontSize: '0.82rem', cursor: 'pointer', background: 'none', border: 'none' }}
             >
               Export Report
             </button>
             <button 
               onClick={() => setIsAiOpen(true)} 
-              style={{ color: 'var(--blue-primary)', fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer' }}
+              style={{ color: '#2563EB', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer', background: 'none', border: 'none' }}
             >
-              Ask AI Assistant
+              Ask EconLens AI
             </button>
           </div>
         </div>
       </footer>
 
-      {/* Interactive Modals */}
+      {/* 4. Interactive Modals */}
       <AskEconLensModal
         isOpen={isAiOpen}
         onClose={() => setIsAiOpen(false)}
@@ -497,7 +322,7 @@ export const App: React.FC = () => {
         onClose={() => setIsSearchOpen(false)}
         onSelectRegion={(id) => {
           setSelectedRegionId(id);
-          setSelectedSubRegion(null);
+          setIsSearchOpen(false);
         }}
         onNavigateToTab={(tab) => {
           setCurrentTab(tab);

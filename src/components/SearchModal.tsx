@@ -90,7 +90,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   key={r.id}
                   onClick={() => {
                     onSelectRegion(r.id);
-                    onNavigateToTab('dashboard');
+                    onNavigateToTab('explore');
                     onClose();
                   }}
                   style={{

@@ -90,6 +90,50 @@ export interface RegionData {
   skills: SkillDemandItem[];
   
   localSubRegions?: string[]; // e.g. taluks/blocks
+  parentRegionId?: string; // e.g. 'coimbatore' for 'pollachi'
+  administrativeHierarchy?: {
+    country: string;
+    state: string;
+    district: string;
+    localArea?: string;
+  };
+  summaryText?: string;
+  keyDrivers?: {
+    primarySectors: Array<{
+      name: string;
+      sharePercent: number;
+      employmentPercent: number;
+      description: string;
+    }>;
+    livelihoodsDescription: string;
+    keyProducts: string[];
+    comparativeAdvantages: string[];
+    expansionOpportunities: string[];
+  };
+  strengths?: Array<{
+    title: string;
+    description: string;
+    evidence: string;
+    benchmark?: string;
+  }>;
+  challenges?: Array<{
+    title: string;
+    description: string;
+    evidence: string;
+    benchmark?: string;
+  }>;
+  recommendations?: ActionRecommendation[];
+  multiYearProjections?: {
+    horizons: Array<{
+      years: 1 | 3 | 5 | 10;
+      label: string;
+      baseline: { gva: number; gap: number; jobsAffected: number; msmeGrowth: number };
+      plan: { gva: number; gap: number; jobsAffected: number; msmeGrowth: number };
+      accelerated: { gva: number; gap: number; jobsAffected: number; msmeGrowth: number };
+    }>;
+    assumptions: string[];
+    uncertaintyRange: string;
+  };
   dataProvenance: DataProvenance;
   lastUpdated: string;
   sampleNotes?: string;
@@ -161,6 +205,12 @@ export interface ActionRecommendation {
   potentialBenefits: string;
   tradeoffsAndCosts: string;
   timeline: 'SHORT_TERM' | 'MEDIUM_TERM' | 'LONG_TERM';
+  planningCategory?: 'QUICK_WINS' | 'MEDIUM_TERM' | 'LONG_TERM';
+  estimatedCost?: string;
+  implementationPeriod?: string;
+  measurableSuccessIndicator?: string;
+  prerequisites?: string[];
+  risks?: string[];
   evidenceStrength: 'STRONG' | 'MODERATE' | 'EXPLORATORY';
   relevantIndicators: string[];
 }

@@ -1,11 +1,18 @@
 import { ActionRecommendation } from '../types';
+import { POLLACHI_DATA } from './geographyRegistry';
 
 export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> = {
+  'pollachi': POLLACHI_DATA.recommendations || [],
+
   'coimbatore': [
     {
       id: 'rec-cbe-1',
       title: 'Accelerate Dedicated Irugur Inland Freight Dry-Port & Container Corridor',
       category: 'TRANSPORT_INFRA',
+      planningCategory: 'MEDIUM_TERM',
+      timeline: 'MEDIUM_TERM',
+      estimatedCost: '₹320 Cr ($38.5M)',
+      implementationPeriod: '18–24 months',
       issueIdentified: 'Container transit to Cochin/Tuticorin ports experiences 10.8 hrs delay (benchmark: 6.2 hrs), incurring 22% higher logistics costs for export foundries and textile machinery.',
       supportingEvidence: 'OpenStreetMap GIS route impedance model shows NH-544 urban congestion adds 3.4 hrs of idle container detention.',
       suggestedIntervention: 'Form a Joint Special Purpose Vehicle (SPV) with Southern Railway and CONCOR to establish a bonded inland container depot (ICD) with direct rail freight scheduled lines to Cochin Vallarpadam and Tuticorin VOC Port.',
@@ -13,8 +20,10 @@ export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> =
       stakeholders: ['District Administration (Collectorate)', 'CONCOR', 'Southern Railway', 'CODISSIA', 'TIDCO'],
       feasibilityChecks: 'Rail siding availability at Irugur junction, land acquisition for 45-acre bonded container yard, environmental clearance.',
       potentialBenefits: 'Reduces export freight transit time by 42%; cuts container logistics cost by ₹14,500 per TEU.',
-      tradeoffsAndCosts: 'Estimated capital expenditure: ₹320 Cr; requires coordinate realignment with municipal bypass master plan.',
-      timeline: 'MEDIUM_TERM',
+      tradeoffsAndCosts: 'Capital expenditure: ₹320 Cr; requires coordinate realignment with municipal bypass master plan.',
+      prerequisites: ['MoRTH right-of-way clearance', 'State cabinet approval for SPV equity'],
+      risks: ['Land acquisition timeline delays', 'Railway rake allocation bottlenecks'],
+      measurableSuccessIndicator: 'Port container transit reduced from 10.8 hrs to under 6.5 hrs.',
       evidenceStrength: 'STRONG',
       relevantIndicators: ['freightLogisticsIndex', 'roadDensity', 'transportAccessIndex']
     },
@@ -22,6 +31,10 @@ export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> =
       id: 'rec-cbe-2',
       title: 'Establish Industry-Funded Mechatronics & CNC Automation Finishing Schools',
       category: 'EMPLOYMENT_SKILLS',
+      planningCategory: 'QUICK_WINS',
+      timeline: 'SHORT_TERM',
+      estimatedCost: '₹28 Cr ($3.4M)',
+      implementationPeriod: '6–12 months',
       issueIdentified: '64% of foundries and precision component units experience severe vacancies for automated tooling technicians, despite 21.8% youth underemployment in general diplomas.',
       supportingEvidence: 'PLFS 2024 microdata confirms high educational attainment (32.6% tertiary) paired with a 42% skill mismatch score in automated manufacturing skills.',
       suggestedIntervention: 'Launch "Kovai Skill Guild" — 12 industry-grade micro-credential labs co-financed by CODISSIA and the Directorate of Technical Education inside existing government ITIs and polytechnic colleges.',
@@ -30,7 +43,9 @@ export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> =
       feasibilityChecks: 'Lab equipment procurement via CSR matched funding; dual-apprenticeship stipend structure.',
       potentialBenefits: 'Lowers machine setup downtime from 18% to 6%; increases fresh graduate starting monthly compensation by 35%.',
       tradeoffsAndCosts: 'Estimated seed funding: ₹28 Cr; requires industry mentors to commit 4 hours weekly.',
-      timeline: 'SHORT_TERM',
+      prerequisites: ['Syllabus revision by State Technical Board', 'MoU with machine tool builders'],
+      risks: ['Faculty resistance to updated software', 'Student dropouts during apprentice phase'],
+      measurableSuccessIndicator: '85% job placement within 60 days of program graduation.',
       evidenceStrength: 'STRONG',
       relevantIndicators: ['skillMismatchIndex', 'youthUnemployment', 'higherEduPercent']
     },
@@ -38,6 +53,10 @@ export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> =
       id: 'rec-cbe-3',
       title: 'Decentralized Solar Packhouse & Cold-Chain Network for Pollachi Coconut Belt',
       category: 'AGRO_FOOD',
+      planningCategory: 'QUICK_WINS',
+      timeline: 'SHORT_TERM',
+      estimatedCost: '₹18.5 Cr ($2.2M)',
+      implementationPeriod: '8–12 months',
       issueIdentified: 'Post-harvest losses in tender coconut, nutmeg, and spices reach 28.5% due to absence of temperature-controlled aggregation within 20 km of harvesting nodes.',
       supportingEvidence: 'Department of Agricultural Marketing GIS audits show cold storage capacity deficit is 34.5% across southern taluks.',
       suggestedIntervention: 'Deploy 8 decentralized 50-tonne solar-powered cold stores with automated sorting and grading machines across registered Farmer Producer Companies (FPOs).',
@@ -46,14 +65,20 @@ export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> =
       feasibilityChecks: 'Rooftop solar microgrid load balance; 3-phase grid backup; FPO maintenance training.',
       potentialBenefits: 'Extends fresh produce shelf life by 14 days; boosts farm-gate realization by 28% through export grade sorting.',
       tradeoffsAndCosts: 'Capital outlay: ₹18.5 Cr (covered 60% under Agri Infrastructure Fund); requires ongoing cold-chain power auditing.',
-      timeline: 'SHORT_TERM',
+      prerequisites: ['FPO land identification', 'Solar panel grid interconnection approval'],
+      risks: ['Initial farmer reluctance to pay sorting cess', 'Pre-cooling operational errors'],
+      measurableSuccessIndicator: 'Post-harvest spoilage lowered to under 8% across beneficiary blocks.',
       evidenceStrength: 'STRONG',
-      relevantIndicators: ['coldStorageGapPercent', 'agriculturalProductivity', 'ruralEmployment']
+      relevantIndicators: ['coldStorageGapPercent', 'agriculturalProductivity', 'economicGrowthYoY']
     },
     {
       id: 'rec-cbe-4',
       title: 'Group Captive Renewable Wheeling Framework for MSME Foundry Clusters',
       category: 'MSME_INDUSTRY',
+      planningCategory: 'MEDIUM_TERM',
+      timeline: 'MEDIUM_TERM',
+      estimatedCost: '₹45 Cr ($5.4M consortium equity)',
+      implementationPeriod: '12–18 months',
       issueIdentified: 'High commercial/industrial power tariffs and quarterly raw material scrap price swings threaten the economic survival of 600+ traditional cupola casting foundries.',
       supportingEvidence: 'Foundry energy expenses have risen to 22% of gross manufacturing cost, causing margins to drop to 6.8%.',
       suggestedIntervention: 'Form a cluster-level captive solar/wind energy aggregation cooperative enabling small units to wheel green electricity under simplified TNERC open access regulations.',
@@ -62,9 +87,183 @@ export const RECOMMENDATIONS_BY_REGION: Record<string, ActionRecommendation[]> =
       feasibilityChecks: 'Substation wheeling capacity in Annur and Arasur; minimum consortium equity threshold.',
       potentialBenefits: 'Reduces unit electricity cost from ₹8.40/kWh to ~₹4.80/kWh, preserving 35,000 skilled manufacturing jobs.',
       tradeoffsAndCosts: 'Consortium formation friction; grid cross-subsidy surcharge negotiations.',
-      timeline: 'MEDIUM_TERM',
+      prerequisites: ['TNERC open-access wheeling guidelines', 'Consortium legal entity registration'],
+      risks: ['Wheeling regulatory policy changes', 'Peak wind seasonality variation'],
+      measurableSuccessIndicator: '30% reduction in average power expense across participating MSME foundries.',
       evidenceStrength: 'MODERATE',
       relevantIndicators: ['msmeDensity', 'activeEnterprises', 'powerReliabilityHrs']
+    }
+  ],
+
+  'chennai': [
+    {
+      id: 'rec-chn-1',
+      title: 'Industrial Estate Stormwater Basin & Coastal Resilience Infrastructure',
+      category: 'TRANSPORT_INFRA',
+      planningCategory: 'MEDIUM_TERM',
+      timeline: 'MEDIUM_TERM',
+      estimatedCost: '₹140 Cr',
+      implementationPeriod: '12–24 months',
+      issueIdentified: 'Monsoon flooding periodically inundates Ambattur and Manali industrial zones, halting manufacturing operations for 9–14 working days.',
+      supportingEvidence: 'CMDA and disaster authority records confirm ₹1,200 Cr in direct equipment and inventory damage during cyclonic flooding events.',
+      suggestedIntervention: 'Construct interconnected stormwater retention reservoirs, high-capacity pumping stations, and elevated dyke perimeters surrounding critical MSME estates.',
+      intendedBeneficiaries: '3,200 manufacturing units and 85,000 shift workers in North & West Chennai.',
+      stakeholders: ['TNDMA', 'Greater Chennai Corporation', 'SIDCO', 'Ambattur Industrial Estate Association (AIEMA)'],
+      feasibilityChecks: 'Canal desilting clearances and right-of-way for drainage conduits.',
+      potentialBenefits: 'Protects against 1-in-25 year flood inundations; eliminates annual monsoon work stoppages.',
+      tradeoffsAndCosts: 'Capital outlay: ₹140 Cr; necessitates relocation of informal drainage encroachments.',
+      prerequisites: ['Drainage master plan sign-off', 'Inter-agency coordination board'],
+      risks: ['High tide discharge backflow during severe storm surges'],
+      measurableSuccessIndicator: 'Zero days of flood-induced factory shutdown during northeast monsoons.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['powerReliabilityHrs', 'transportAccessIndex', 'msmeDensity']
+    },
+    {
+      id: 'rec-chn-2',
+      title: 'Plug-and-Play Multi-Storey Flatted Factories in Urban Core',
+      category: 'MSME_INDUSTRY',
+      planningCategory: 'QUICK_WINS',
+      timeline: 'SHORT_TERM',
+      estimatedCost: '₹65 Cr',
+      implementationPeriod: '9–12 months',
+      issueIdentified: 'Skyrocketing industrial land lease rates in Ambattur and Guindy exceed ₹14,000/sq.ft, pricing out Tier-3 precision suppliers.',
+      supportingEvidence: 'SIPCOT land records demonstrate 46% increase in industrial ground rents over 5 years.',
+      suggestedIntervention: 'Erect high-density vertical industrial flatted complexes with shared testing facilities, heavy freight elevators, and pre-cleared power connections.',
+      intendedBeneficiaries: '350+ precision electronic, medical device, and software-hardware integration startups.',
+      stakeholders: ['SIDCO', 'TIDCO', 'State MSME Department', 'AIEMA'],
+      feasibilityChecks: 'Available SIDCO institutional land plots in Ambattur.',
+      potentialBenefits: 'Cuts startup capital entry barrier by 60%; keeps precision suppliers close to OEM assembly lines.',
+      tradeoffsAndCosts: 'Capital cost: ₹65 Cr; building height and structural load engineering constraints.',
+      prerequisites: ['Fire safety and industrial floor-load zoning certification'],
+      risks: ['Tenant lease default rates during economic downturns'],
+      measurableSuccessIndicator: '90%+ occupancy within 6 months of commissioning.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['msmeDensity', 'activeEnterprises', 'economicGrowthYoY']
+    }
+  ],
+
+  'tiruppur': [
+    {
+      id: 'rec-tpr-1',
+      title: 'Synthetic & Technical Yarn Transition Technology Mission',
+      category: 'EMPLOYMENT_SKILLS',
+      planningCategory: 'QUICK_WINS',
+      timeline: 'SHORT_TERM',
+      estimatedCost: '₹35 Cr',
+      implementationPeriod: '6–12 months',
+      issueIdentified: 'Global active sportswear demand is 72% synthetic, while Tiruppur capacity remains 82% pure cotton-centric.',
+      supportingEvidence: 'AEPC trade statistics show Tiruppur export growth trailing Vietnam and Bangladesh in synthetic knitwear categories.',
+      suggestedIntervention: 'Establish a specialized MMF (Man-Made Fiber) technical training center with subsidized circular knitting machine conversions.',
+      intendedBeneficiaries: '1,200 knitwear exporters and 45,000 textile operators.',
+      stakeholders: ['Ministry of Textiles', 'TEA (Tirupur Exporters Association)', 'NIFT-TEA Institute', 'SIMA'],
+      feasibilityChecks: 'Syllabus alignment with international sports apparel brand specifications.',
+      potentialBenefits: 'Unlocks entry into high-margin $120B global athleisure supply chain; increases unit export price by 28%.',
+      tradeoffsAndCosts: 'Capital cost: ₹35 Cr; requires retooling traditional circular knitting machines.',
+      prerequisites: ['Customs tariff rationalization on specialized polyester filament yarn'],
+      risks: ['Fluctuations in petrochemical synthetic raw material prices'],
+      measurableSuccessIndicator: 'MMF synthetic export share grows from 18% to 35% within 2 years.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['skillMismatchIndex', 'gvaShare', 'economicGrowthYoY']
+    }
+  ],
+
+  'bengaluru': [
+    {
+      id: 'rec-blr-1',
+      title: 'Fast-Track Suburban Rail & Tech Corridor Feeder Transit',
+      category: 'TRANSPORT_INFRA',
+      planningCategory: 'MEDIUM_TERM',
+      timeline: 'MEDIUM_TERM',
+      estimatedCost: '₹480 Cr priority phase',
+      implementationPeriod: '18–30 months',
+      issueIdentified: 'Peak-hour commute speeds in Outer Ring Road / Whitefield drop to 11.2 km/h, imposing severe productivity penalties.',
+      supportingEvidence: 'BMRCL and traffic probe data document ₹19,700 Cr annual productivity losses from commuter congestion.',
+      suggestedIntervention: 'Accelerate Suburban Rail Corridor-2 (Baiyappanahalli to Chikkabanavara) and deploy electric micro-transit feeder shuttles to tech parks.',
+      intendedBeneficiaries: '450,000 daily tech workers and industrial commuters.',
+      stakeholders: ['K-RIDE', 'South Western Railway', 'BMRCL', 'Outer Ring Road Companies Association (ORRCA)'],
+      feasibilityChecks: 'Existing railway right-of-way track doubling.',
+      potentialBenefits: 'Removes 85,000 private vehicles from arterial roads daily; cuts average commute times by 45 minutes.',
+      tradeoffsAndCosts: 'High capital outlay; requires coordination between state and railway ministries.',
+      prerequisites: ['Railway land transfer sign-offs', 'Contractor mobilization schedule'],
+      risks: ['Subsurface utility relocation delays'],
+      measurableSuccessIndicator: 'Peak commute speed along ORR corridor restored to >24 km/h.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['transportAccessIndex', 'freightLogisticsIndex', 'nighttimeRadiance']
+    }
+  ],
+
+  'pune': [
+    {
+      id: 'rec-pne-1',
+      title: 'Chakan-Bhosari Auto MSME Electric Powertrain Conversion Fund',
+      category: 'MSME_INDUSTRY',
+      planningCategory: 'QUICK_WINS',
+      timeline: 'SHORT_TERM',
+      estimatedCost: '₹50 Cr revolving credit line',
+      implementationPeriod: '6–12 months',
+      issueIdentified: 'Over 3,800 ICE component suppliers risk obsolescence as domestic EV two-wheeler and commercial vehicle adoption accelerates.',
+      supportingEvidence: 'ACMA surveys show 62% of Tier-2 forging and machining MSMEs lack capital for EV motor and battery pack tooling.',
+      suggestedIntervention: 'Create a subsidized soft-loan revolving credit facility paired with an ARAI-certified EV component prototyping laboratory in Chakan.',
+      intendedBeneficiaries: '850+ small machine shops and 24,000 precision metalworkers.',
+      stakeholders: ['ARAI Pune', 'MCCIA', 'SIDBI', 'Maharashtra Industries Department'],
+      feasibilityChecks: 'ARAI technical validation protocol and SIDBI lending framework.',
+      potentialBenefits: 'Protects ₹8,500 Cr in regional automotive subcontracting revenue; creates 6,000 new clean-mobility technical jobs.',
+      tradeoffsAndCosts: 'State credit guarantee liability; requires strict technical benchmarking of recipient machines.',
+      prerequisites: ['SIDBI-State MoU execution', 'ARAI common testing lab equipment commissioning'],
+      risks: ['Rapid shifts in global EV battery chemistries'],
+      measurableSuccessIndicator: '300+ MSMEs transitioned to certified EV sub-assembly supply lines.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['msmeDensity', 'activeEnterprises', 'skillMismatchIndex']
+    }
+  ],
+
+  'eastern_up': [
+    {
+      id: 'rec-eup-1',
+      title: 'Direct Highway Connector to Varanasi Inland Waterway Terminal',
+      category: 'TRANSPORT_INFRA',
+      planningCategory: 'MEDIUM_TERM',
+      timeline: 'MEDIUM_TERM',
+      estimatedCost: '₹85 Cr',
+      implementationPeriod: '12–18 months',
+      issueIdentified: 'Varanasi multi-modal river port operates at only 18% cargo capacity due to congested city street access between NH-19 and the river jetty.',
+      supportingEvidence: 'IWAI cargo manifests show barge cargo volumes constrained by last-mile truck queuing delays exceeding 6 hours.',
+      suggestedIntervention: 'Construct an elevated 4-lane direct freight bypass linking Ramnagar terminal jetty directly to National Highway 19.',
+      intendedBeneficiaries: 'Agricultural exporters, cement/coal bulk freight shippers, and regional logistics providers.',
+      stakeholders: ['IWAI', 'MoRTH', 'UP Public Works Dept', 'DPIIT Logistics Division'],
+      feasibilityChecks: 'National highway spur alignment surveys completed.',
+      potentialBenefits: 'Multiplies river barge freight utilization 4x; cuts cargo logistics cost to Kolkata port by 34%.',
+      tradeoffsAndCosts: 'Capital outlay: ₹85 Cr; environmental floodway clearances required.',
+      prerequisites: ['River basin environmental clearance', 'Highway connection toll plaza clearance'],
+      risks: ['Ganga monsoon high-water draft level variations'],
+      measurableSuccessIndicator: 'Terminal cargo handling reaches 1.2 million tonnes annually.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['freightLogisticsIndex', 'roadDensity', 'transportAccessIndex']
+    }
+  ],
+
+  'vidarbha': [
+    {
+      id: 'rec-vdb-1',
+      title: 'Mega Citrus Juice Processing & Waxing Cluster on Samruddhi Mahamarg',
+      category: 'AGRO_FOOD',
+      planningCategory: 'MEDIUM_TERM',
+      timeline: 'MEDIUM_TERM',
+      estimatedCost: '₹62 Cr',
+      implementationPeriod: '12–20 months',
+      issueIdentified: '92% of Nagpur oranges exported raw without processing, causing severe farmgate distress during harvest market gluts.',
+      supportingEvidence: 'ICAR-CCRI studies record 35% farmgate price crashes during October-November arrivals.',
+      suggestedIntervention: 'Establish an integrated citrus mega-food processing park at Samruddhi Expressway interchange with automated juice extraction, essential oil distillation, and pectin recovery.',
+      intendedBeneficiaries: '32,000 orange and horticulture farmers across Nagpur, Amravati, and Wardha.',
+      stakeholders: ['Maharashtra Agro Industries Development Corp', 'ICAR-CCRI', 'Maha Agri Dept', 'Nagpur Orange Grower FPOs'],
+      feasibilityChecks: 'Direct expressway interchange access and power sub-station availability.',
+      potentialBenefits: 'Triples farmer net realization per acre; reduces post-harvest orange spoilage from 26% to under 5%.',
+      tradeoffsAndCosts: 'Capital expenditure: ₹62 Cr (leveraging central Mega Food Park subsidy scheme).',
+      prerequisites: ['MIDC land allocation at expressway junction', 'FPO grower contract agreements'],
+      risks: ['Erratic unseasonal hail and rain events damaging fruit rind quality'],
+      measurableSuccessIndicator: 'Over 80,000 MT of oranges processed into high-value juices and concentrates annually.',
+      evidenceStrength: 'STRONG',
+      relevantIndicators: ['coldStorageGapPercent', 'agriculturalProductivity', 'economicGrowthYoY']
     }
   ]
 };

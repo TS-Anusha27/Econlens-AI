@@ -342,7 +342,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
               {/* Districts */}
               {tnDistricts.map((d) => {
-                const isSelected = selectedRegion.id === d.id;
+                const isSelected = selectedRegion.id === d.id || (d.id === 'coimbatore' && selectedRegion.parentRegionId === 'coimbatore');
                 const isHovered = hoveredRegion?.id === d.id;
                 const fillColor = getColorForRegion(d.data, activeLayer, isSelected);
 
@@ -357,7 +357,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     <path
                       d={d.path}
                       fill={fillColor}
-                      stroke={isSelected ? '#1D4ED8' : 'var(--bg-secondary)'}
+                      stroke={isSelected ? '#2563EB' : 'var(--bg-secondary)'}
                       strokeWidth={isSelected ? '3.5' : '1.8'}
                       filter={isSelected ? 'url(#glow-selected)' : 'none'}
                       opacity={isHovered || isSelected ? 1 : 0.88}
@@ -389,6 +389,56 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                   </g>
                 );
               })}
+
+              {/* Dedicated Centroid Pin for Pollachi (Showcase Pilot Local Area) */}
+              <g
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectRegion('pollachi');
+                }}
+                onMouseEnter={() => setHoveredRegion(REGIONS_DATA['pollachi'] || null)}
+                onMouseLeave={() => setHoveredRegion(null)}
+                style={{ cursor: 'pointer' }}
+              >
+                <circle
+                  cx="165"
+                  cy="282"
+                  r={selectedRegion.id === 'pollachi' ? 8 : 5}
+                  fill={selectedRegion.id === 'pollachi' ? '#F97316' : '#2563EB'}
+                  stroke="#FFFFFF"
+                  strokeWidth="2"
+                />
+                <circle
+                  cx="165"
+                  cy="282"
+                  r={selectedRegion.id === 'pollachi' ? 14 : 9}
+                  fill="none"
+                  stroke={selectedRegion.id === 'pollachi' ? '#F97316' : '#2563EB'}
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                  opacity="0.8"
+                />
+                <rect
+                  x="176"
+                  y="273"
+                  width="104"
+                  height="18"
+                  rx="4"
+                  fill="#FFFFFF"
+                  stroke="#CBD5E1"
+                  strokeWidth="1"
+                  opacity="0.95"
+                />
+                <text
+                  x="180"
+                  y="285"
+                  fill="#14213D"
+                  fontSize="8.5"
+                  fontWeight="700"
+                >
+                  📍 Pollachi (Agro Hub)
+                </text>
+              </g>
             </svg>
           ) : (
             /* National India Scale Regional Network Map */
